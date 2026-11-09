@@ -7,6 +7,7 @@ import argparse
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
 
 
 ROOT = Path(__file__).resolve().parent
@@ -14,8 +15,9 @@ ROOT = Path(__file__).resolve().parent
 
 class ReplayHandler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
-        if self.path == "/":
-            self.path = "/app/index.html"
+        parsed = urlsplit(self.path)
+        if parsed.path == "/":
+            self.path = urlunsplit((parsed.scheme, parsed.netloc, "/app/index.html", parsed.query, parsed.fragment))
         super().do_GET()
 
     def end_headers(self) -> None:

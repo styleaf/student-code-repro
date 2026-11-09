@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小组协作事后分析</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/app/analysis.css" />
+  </head>
+  <body>
+    <header class="analysis-topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div><h1>小组协作事后分析</h1><p>行为、共享产物、AI交互与自动分析的联合视图</p></div>
+      </div>
+      <label class="group-control"><span>小组</span><select id="groupSelect"></select></label>
+      <div id="memberLegend" class="member-legend" aria-label="成员颜色"></div>
+      <a id="replayLink" class="nav-button" href="/">返回回放</a>
+    </header>
+
+    <main id="analysisMain" class="analysis-main" aria-busy="true">
+      <section class="analysis-warning" role="note">
+        <strong>自动分析，仅供筛查。</strong>
+        <span>行为次数不等于认知投入；异常提示和ICAP判断需要结合原始回放复核。</span>
+      </section>
+
+      <section id="overviewMetrics" class="overview-metrics" aria-label="小组概览"></section>
+
+      <div class="analysis-grid">
+        <section class="analysis-panel participation-panel" aria-labelledby="participationTitle">
+          <header class="section-header">
+            <div><h2 id="participationTitle">成员参与与最终产物</h2><p>按真实行为记录计数，不表示贡献质量</p></div>
+            <div id="behaviorLegend" class="behavior-legend"></div>
+          </header>
+          <div id="participationView" class="participation-view"></div>
+        </section>
+
+        <section class="analysis-panel icap-panel" aria-labelledby="icapTitle">
+          <header class="section-header">
+            <div><h2 id="icapTitle">ICAP时间演化</h2><p>点击时间窗口查看自动分析依据</p></div>
+            <div class="icap-legend" aria-label="ICAP图例">
+              <span class="interactive">Interactive</span><span class="constructive">Constructive</span><span class="active">Active</span><span class="passive">Passive</span><span class="none">None</span>
+            </div>
+          </header>
+          <div id="icapTimeline" class="icap-timeline"></div>
+          <div id="icapDetail" class="icap-detail"></div>
+        </section>
+
+        <section class="analysis-panel anomaly-panel" aria-labelledby="anomalyTitle">
+          <header class="section-header"><div><h2 id="anomalyTitle">协作异常提示</h2><p>合并相同类型的窗口级自动提示</p></div><span id="anomalyMeta" class="section-meta"></span></header>
+          <div id="anomalyList" class="anomaly-list"></div>
+        </section>
+
+        <section class="analysis-panel ai-analysis-panel" aria-labelledby="aiTitle">
+          <header class="section-header"><div><h2 id="aiTitle">共享AI交互</h2><p>问题类型、认知层级及小组后续反应</p></div><span id="aiMeta" class="section-meta"></span></header>
+          <div id="aiAnalysisList" class="analysis-list"></div>
+        </section>
+
+        <section class="analysis-panel code-analysis-panel" aria-labelledby="codeAnalysisTitle">
+          <header class="section-header"><div><h2 id="codeAnalysisTitle">代码演化里程碑</h2><p>来自代码窗口分析的图表类型和关键变化</p></div><span id="codeMeta" class="section-meta"></span></header>
+          <div id="codeAnalysisView" class="analysis-list"></div>
+        </section>
+
+        <section class="analysis-panel note-analysis-panel" aria-labelledby="noteAnalysisTitle">
+          <header class="section-header"><div><h2 id="noteAnalysisTitle">共享笔记见解</h2><p>完整分析优先，缺失时使用抽样窗口分析</p></div><span id="noteMeta" class="section-meta"></span></header>
+          <div id="noteAnalysisView" class="analysis-list"></div>
+        </section>
+      </div>
+
+      <section class="class-overview" aria-labelledby="classOverviewTitle">
+        <header class="section-header"><div><h2 id="classOverviewTitle">全部小组概览</h2><p>点击一行切换当前分析对象</p></div></header>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>小组</th><th>行为记录</th><th>ICAP窗口</th><th>AI交互</th><th>笔记见解</th><th>异常提示</th><th>任务完成</th></tr></thead>
+            <tbody id="classTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/app/analysis.js"></script>
+  </body>
+</html>

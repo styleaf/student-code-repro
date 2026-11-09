@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>学生编程回放</title>
+    <title>小组协作回放</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="/app/styles.css" />
   </head>
@@ -11,118 +11,74 @@
     <header class="topbar">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true"></span>
-        <div>
-          <h1>学生编程回放</h1>
-          <p>真实事件时间线</p>
-        </div>
+        <div><h1>小组协作回放</h1><p>共享代码、笔记与对话的真实时间线</p></div>
       </div>
-      <div class="selectors" aria-label="回放对象选择">
-        <label>
-          <span>课堂 / 小组</span>
-          <select id="groupSelect"></select>
-        </label>
-        <label>
-          <span>学生</span>
-          <select id="studentSelect"></select>
-        </label>
-      </div>
-      <div class="session-summary">
-        <span id="onlineStatus" class="status-pill status-unknown">状态未记录</span>
-        <span id="tabStatus" class="tab-pill">页签未记录</span>
-      </div>
+      <label class="group-control"><span>小组</span><select id="groupSelect"></select></label>
+      <div id="memberLegend" class="member-legend" aria-label="成员颜色和当前状态"></div>
+      <a id="analysisLink" class="text-button" href="/app/analysis.html">事后分析</a>
     </header>
 
-    <main class="replay-shell" id="replayShell" aria-busy="true">
-      <div class="offline-notice" id="offlineNotice" hidden>
-        当前时间点记录为离线。代码和 AI 内容保持在离线前的最后状态。
-      </div>
-
-      <section class="workspace" aria-label="编程回放工作区">
-        <section class="editor-panel" aria-labelledby="editorTitle">
+    <main id="replayShell" class="replay-shell" aria-busy="true">
+      <section class="workspace" aria-label="小组回放工作区">
+        <section id="codePanel" class="panel code-panel" aria-labelledby="codeTitle">
           <header class="panel-header">
-            <div>
-              <h2 id="editorTitle">代码编辑器</h2>
-              <p id="codeMeta">等待数据</p>
-            </div>
-            <div class="editor-position" id="cursorPosition">光标未记录</div>
+            <div><h2 id="codeTitle">共享代码</h2><p id="codeMeta">等待数据</p></div>
+            <span id="codeActor" class="actor-badge">尚无快照</span>
           </header>
-          <div id="changeSummary" class="change-summary">尚未发生代码变化</div>
-          <div id="codeView" class="code-view" role="region" aria-label="当前完整代码"></div>
+          <div class="code-context">
+            <span id="changeSummary">尚未发生代码变化</span>
+            <span id="cursorSummary">文本光标未记录</span>
+          </div>
+          <div id="codeView" class="code-view" role="region" aria-label="当前完整共享代码"></div>
         </section>
 
-        <aside class="ai-panel" aria-labelledby="aiTitle">
-          <header class="panel-header">
-            <div>
-              <h2 id="aiTitle">AI 对话</h2>
-              <p id="aiMeta">问题和回复按各自时间出现</p>
-            </div>
-          </header>
-          <div id="aiMessages" class="ai-messages" aria-live="polite"></div>
-        </aside>
+        <section class="context-panel" aria-label="共享笔记和房间聊天">
+          <div class="compact-tabs" role="tablist" aria-label="右侧内容">
+            <button class="context-tab is-active" type="button" role="tab" data-context="notes" aria-selected="true">共享笔记</button>
+            <button class="context-tab" type="button" role="tab" data-context="chat" aria-selected="false">房间聊天 / AI</button>
+          </div>
+          <section id="notesPane" class="context-pane notes-pane" data-context-pane="notes" aria-labelledby="notesTitle">
+            <header class="panel-header">
+              <div><h2 id="notesTitle">共享笔记</h2><p id="noteMeta">按快照恢复</p></div>
+              <span id="noteActor" class="actor-badge">尚无快照</span>
+            </header>
+            <div id="noteView" class="note-view"></div>
+          </section>
+          <section id="chatPane" class="context-pane chat-pane" data-context-pane="chat" aria-labelledby="chatTitle">
+            <header class="panel-header">
+              <div><h2 id="chatTitle">房间聊天 / AI</h2><p id="chatMeta">消息只在发送时间后出现</p></div>
+            </header>
+            <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+          </section>
+        </section>
       </section>
 
-      <section class="lower-panel" aria-label="活动与执行结果">
-        <div class="activity-pane">
-          <header class="subpanel-header">
-            <h2>最近活动</h2>
-            <span>点击可跳转</span>
-          </header>
+      <section class="lower-panel" aria-label="活动和操作记录">
+        <section class="activity-pane">
+          <header class="subpanel-header"><h2>最近活动</h2><span>点击跳转到事件</span></header>
           <div id="activityList" class="activity-list"></div>
-        </div>
-        <div class="verification-pane">
-          <header class="subpanel-header">
-            <h2>运行与验证</h2>
-            <span>真实操作记录</span>
-          </header>
-          <div class="verification-body">
-            <div class="verification-list">
-              <button class="verification-item" type="button" data-action-label="Vis Result">
-                <i class="verification-icon preview-icon" aria-hidden="true"></i>
-                <span><strong>结果页预览</strong><small id="previewStatus">尚未打开</small></span>
-              </button>
-              <button class="verification-item" type="button" data-action-label="Data">
-                <i class="verification-icon data-icon" aria-hidden="true"></i>
-                <span><strong>查看数据</strong><small id="dataStatus">尚未打开</small></span>
-              </button>
-              <button class="verification-item" type="button" data-action-label="PDF">
-                <i class="verification-icon pdf-icon" aria-hidden="true"></i>
-                <span><strong>查看 PDF</strong><small id="pdfStatus">尚未打开</small></span>
-              </button>
-            </div>
-            <p class="verification-note">
-              数据未采集终端命令、程序输出、报错或测试通过/失败结果，因此只能确认学生查看过这些页面。
-            </p>
-          </div>
-        </div>
+        </section>
+        <section class="action-pane">
+          <header class="subpanel-header"><h2>页面操作与任务完成</h2><span id="completionStatus">尚未完成</span></header>
+          <div id="actionSummary" class="action-summary"></div>
+          <p class="data-caveat">记录了结果页、数据、PDF、发送和上传等按钮操作；没有终端输出或测试成败数据。</p>
+        </section>
       </section>
     </main>
 
     <footer class="timeline-dock">
-      <div class="marker-legend" aria-label="时间轴图例">
-        <span><i class="legend-code"></i>代码</span>
-        <span><i class="legend-ai"></i>AI</span>
-        <span><i class="legend-action"></i>操作</span>
-        <span><i class="legend-status"></i>状态</span>
+      <div class="timeline-topline">
+        <div id="markerLegend" class="marker-legend"></div>
+        <span class="kind-legend"><i class="kind-code"></i>代码 <i class="kind-note"></i>笔记 <i class="kind-chat"></i>消息 <i class="kind-action"></i>操作</span>
       </div>
-      <div class="marker-lane" id="markerLane" aria-hidden="true"></div>
-      <input id="timeline" class="timeline" type="range" min="0" max="1" value="0" step="1" aria-label="回放时间轴" />
+      <div id="markerLane" class="marker-lane" aria-hidden="true"></div>
+      <input id="timeline" class="timeline" type="range" min="0" max="1" value="0" step="1" aria-label="小组统一时间轴" />
       <div class="playback-row">
         <button id="playButton" class="icon-button" type="button" title="播放" aria-label="播放">▶</button>
         <button id="restartButton" class="icon-button secondary" type="button" title="回到开始" aria-label="回到开始">↶</button>
-        <label class="speed-control">
-          <span>速度</span>
-          <select id="speedSelect">
-            <option value="1">1×</option>
-            <option value="5">5×</option>
-            <option value="15">15×</option>
-            <option value="60" selected>60×</option>
-          </select>
-        </label>
-        <div class="time-readout">
-          <strong id="currentTime">--:--:--</strong>
-          <span id="elapsedTime">00:00 / 00:00</span>
-        </div>
-        <div class="data-note" id="dataNote">正在读取真实数据…</div>
+        <label class="speed-control"><span>速度</span><select id="speedSelect"><option value="1">1×</option><option value="5">5×</option><option value="15">15×</option><option value="60" selected>60×</option></select></label>
+        <div class="time-readout"><strong id="currentTime">--:--:--</strong><span id="elapsedTime">00:00 / 00:00</span></div>
+        <div id="dataNote" class="data-note">正在读取真实数据…</div>
       </div>
     </footer>
 

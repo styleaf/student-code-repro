@@ -1,579 +1,568 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-11-07T14:01:22.216701+08:00",
+  "schemaVersion": 3,
+  "generatedAt": "2026-11-08T20:14:21.633750+08:00",
   "source": "C:\\Users\\Admin\\Desktop\\prodai_local_20260924",
-  "default": {
-    "groupId": "zju-8",
-    "studentId": "zju-8member1"
-  },
+  "defaultGroup": "zju-1",
   "totals": {
     "code": 2824,
+    "notes": 1033,
     "cursor": 11770,
     "actions": 1431,
+    "chat": 402,
     "status": 120,
-    "ai": 48
+    "completion": 10,
+    "aiQuestions": 49,
+    "aiReplies": 48,
+    "noteImages": 2699
   },
+  "assetCount": 33,
+  "manifest": [
+    {
+      "file": "ai_chat_analysis.csv",
+      "rows": 86,
+      "columns": 17
+    },
+    {
+      "file": "ai_interaction_analysis.csv",
+      "rows": 53,
+      "columns": 13
+    },
+    {
+      "file": "analysis_results.csv",
+      "rows": 148,
+      "columns": 14
+    },
+    {
+      "file": "analysis_status.csv",
+      "rows": 1,
+      "columns": 6
+    },
+    {
+      "file": "chatmessages.csv",
+      "rows": 402,
+      "columns": 15
+    },
+    {
+      "file": "codehistories.csv",
+      "rows": 2824,
+      "columns": 9
+    },
+    {
+      "file": "comprehensive_analysis_results.csv",
+      "rows": 278,
+      "columns": 13
+    },
+    {
+      "file": "cursorpositions.csv",
+      "rows": 11770,
+      "columns": 8
+    },
+    {
+      "file": "events.csv",
+      "rows": 7687,
+      "columns": 8
+    },
+    {
+      "file": "message_history.csv",
+      "rows": 97,
+      "columns": 13
+    },
+    {
+      "file": "message_history_1.csv",
+      "rows": 35,
+      "columns": 13
+    },
+    {
+      "file": "message_history_2.csv",
+      "rows": 33,
+      "columns": 13
+    },
+    {
+      "file": "note_analysis_results.csv",
+      "rows": 5,
+      "columns": 10
+    },
+    {
+      "file": "notehistories.csv",
+      "rows": 1033,
+      "columns": 10
+    },
+    {
+      "file": "rooms.csv",
+      "rows": 11,
+      "columns": 7
+    },
+    {
+      "file": "sampled_notes.csv",
+      "rows": 456,
+      "columns": 7
+    },
+    {
+      "file": "sampled_notes_analysis.csv",
+      "rows": 63,
+      "columns": 14
+    },
+    {
+      "file": "taskcompletions.csv",
+      "rows": 10,
+      "columns": 7
+    },
+    {
+      "file": "timeline_analysis.csv",
+      "rows": 0,
+      "columns": 0
+    },
+    {
+      "file": "useractions.csv",
+      "rows": 1431,
+      "columns": 8
+    },
+    {
+      "file": "users.csv",
+      "rows": 64,
+      "columns": 6
+    }
+  ],
   "groups": [
     {
       "id": "zju-1",
       "name": "zju-1",
-      "students": [
+      "file": "data/groups/zju-1.json",
+      "members": [
         {
-          "id": "zju-1member3",
-          "name": "zju-1member3",
-          "file": "data/students/zju-1-zju-1member3-cdd6295f.json",
-          "counts": {
-            "code": 482,
-            "cursor": 2525,
-            "actions": 90,
-            "status": 4,
-            "ai": 1
-          },
-          "start": 1752565382584,
-          "end": 1752568733926,
-          "score": 1710
+          "id": "zju-1member1",
+          "name": "zju-1member1",
+          "username": "",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-1member2",
           "name": "zju-1member2",
-          "file": "data/students/zju-1-zju-1member2-af246efc.json",
-          "counts": {
-            "code": 445,
-            "cursor": 1186,
-            "actions": 50,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565382671,
-          "end": 1752568614575,
-          "score": 1437
+          "username": "SurrenoSelina",
+          "color": "#aee9c1"
         },
         {
-          "id": "zju-1member1",
-          "name": "zju-1member1",
-          "file": "data/students/zju-1-zju-1member1-15037f6d.json",
-          "counts": {
-            "code": 8,
-            "cursor": 40,
-            "actions": 35,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565382755,
-          "end": 1752568668590,
-          "score": 96
+          "id": "zju-1member3",
+          "name": "zju-1member3",
+          "username": "李坚蔚",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 935,
+        "notes": 217,
+        "cursor": 3751,
+        "actions": 175,
+        "chat": 69,
+        "status": 8,
+        "completion": 1,
+        "aiQuestions": 1,
+        "aiReplies": 1,
+        "noteImages": 302
+      },
+      "start": 1752565381994,
+      "end": 1752568733926,
+      "score": 3690
     },
     {
       "id": "zju-10",
       "name": "zju-10",
-      "students": [
+      "file": "data/groups/zju-10.json",
+      "members": [
+        {
+          "id": "zju-10member1",
+          "name": "zju-10member1",
+          "username": "陈逸扬",
+          "color": "#b7d7ff"
+        },
         {
           "id": "zju-10member2",
           "name": "zju-10member2",
-          "file": "data/students/zju-10-zju-10member2-a89cacab.json",
-          "counts": {
-            "code": 10,
-            "cursor": 264,
-            "actions": 76,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565447999,
-          "end": 1752568417159,
-          "score": 184
+          "username": "王睿辉",
+          "color": "#aee9c1"
         },
         {
           "id": "zju-10member3",
           "name": "zju-10member3",
-          "file": "data/students/zju-10-zju-10member3-9143ba3b.json",
-          "counts": {
-            "code": 16,
-            "cursor": 99,
-            "actions": 26,
-            "status": 4,
-            "ai": 0
-          },
-          "start": 1752565447718,
-          "end": 1752568440120,
-          "score": 104
-        },
-        {
-          "id": "zju-10member1",
-          "name": "zju-10member1",
-          "file": "data/students/zju-10-zju-10member1-0e4891bd.json",
-          "counts": {
-            "code": 1,
-            "cursor": 9,
-            "actions": 47,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565447402,
-          "end": 1752568408417,
-          "score": 99
+          "username": "张天乐",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 27,
+        "notes": 62,
+        "cursor": 372,
+        "actions": 149,
+        "chat": 58,
+        "status": 8,
+        "completion": 1,
+        "aiQuestions": 0,
+        "aiReplies": 0,
+        "noteImages": 36
+      },
+      "start": 1752565446599,
+      "end": 1752568440120,
+      "score": 586
     },
     {
       "id": "zju-11",
       "name": "zju-11",
-      "students": [
+      "file": "data/groups/zju-11.json",
+      "members": [
         {
-          "id": "zju-11member3",
-          "name": "zju-11member3",
-          "file": "data/students/zju-11-zju-11member3-bcc086b6.json",
-          "counts": {
-            "code": 208,
-            "cursor": 577,
-            "actions": 62,
-            "status": 8,
-            "ai": 10
-          },
-          "start": 1752565766832,
-          "end": 1752567657656,
-          "score": 1556
+          "id": "zju-11member1",
+          "name": "zju-11member1",
+          "username": "贾涵泽",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-11member2",
           "name": "zju-11member2",
-          "file": "data/students/zju-11-zju-11member2-88472c53.json",
-          "counts": {
-            "code": 0,
-            "cursor": 10,
-            "actions": 35,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565767795,
-          "end": 1752568408091,
-          "score": 72
+          "username": "杨柳依依",
+          "color": "#aee9c1"
         },
         {
-          "id": "zju-11member1",
-          "name": "zju-11member1",
-          "file": "data/students/zju-11-zju-11member1-ed8d5923.json",
-          "counts": {
-            "code": 0,
-            "cursor": 1,
-            "actions": 0,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565767183,
-          "end": 1752567532859,
-          "score": 2
+          "id": "zju-11member3",
+          "name": "zju-11member3",
+          "username": "22",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 208,
+        "notes": 6,
+        "cursor": 588,
+        "actions": 97,
+        "chat": 36,
+        "status": 12,
+        "completion": 1,
+        "aiQuestions": 10,
+        "aiReplies": 10,
+        "noteImages": 2
+      },
+      "start": 1752565766342,
+      "end": 1752568408091,
+      "score": 877
     },
     {
       "id": "zju-2",
       "name": "zju-2",
-      "students": [
-        {
-          "id": "zju-2member3",
-          "name": "zju-2member3",
-          "file": "data/students/zju-2-zju-2member3-7391b17e.json",
-          "counts": {
-            "code": 207,
-            "cursor": 731,
-            "actions": 145,
-            "status": 4,
-            "ai": 6
-          },
-          "start": 1752565385475,
-          "end": 1752568503110,
-          "score": 1395
-        },
+      "file": "data/groups/zju-2.json",
+      "members": [
         {
           "id": "zju-2member1",
           "name": "zju-2member1",
-          "file": "data/students/zju-2-zju-2member1-4fe48915.json",
-          "counts": {
-            "code": 52,
-            "cursor": 446,
-            "actions": 69,
-            "status": 6,
-            "ai": 3
-          },
-          "start": 1752565385508,
-          "end": 1752568441872,
-          "score": 540
+          "username": "951",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-2member2",
           "name": "zju-2member2",
-          "file": "data/students/zju-2-zju-2member2-fd62d513.json",
-          "counts": {
-            "code": 4,
-            "cursor": 106,
-            "actions": 50,
-            "status": 4,
-            "ai": 0
-          },
-          "start": 1752565386615,
-          "end": 1752568578479,
-          "score": 116
+          "username": "wlh",
+          "color": "#aee9c1"
+        },
+        {
+          "id": "zju-2member3",
+          "name": "zju-2member3",
+          "username": "黄超",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 263,
+        "notes": 7,
+        "cursor": 1283,
+        "actions": 264,
+        "chat": 66,
+        "status": 14,
+        "completion": 1,
+        "aiQuestions": 9,
+        "aiReplies": 9,
+        "noteImages": 18
+      },
+      "start": 1752565384670,
+      "end": 1752568578479,
+      "score": 1331
     },
     {
       "id": "zju-3",
       "name": "zju-3",
-      "students": [
+      "file": "data/groups/zju-3.json",
+      "members": [
         {
           "id": "zju-3member1",
           "name": "zju-3member1",
-          "file": "data/students/zju-3-zju-3member1-0c721588.json",
-          "counts": {
-            "code": 422,
-            "cursor": 711,
-            "actions": 45,
-            "status": 2,
-            "ai": 1
-          },
-          "start": 1752565645201,
-          "end": 1752568474910,
-          "score": 1438
+          "username": "zhima",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-3member2",
           "name": "zju-3member2",
-          "file": "data/students/zju-3-zju-3member2-a335380d.json",
-          "counts": {
-            "code": 66,
-            "cursor": 98,
-            "actions": 21,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565646126,
-          "end": 1752567964328,
-          "score": 242
+          "username": "李佑成",
+          "color": "#aee9c1"
         },
         {
           "id": "zju-3member3",
           "name": "zju-3member3",
-          "file": "data/students/zju-3-zju-3member3-1648d7f0.json",
-          "counts": {
-            "code": 0,
-            "cursor": 2,
-            "actions": 5,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565645162,
-          "end": 1752568407714,
-          "score": 12
+          "username": "idontwanttodothis",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 488,
+        "notes": 207,
+        "cursor": 811,
+        "actions": 71,
+        "chat": 12,
+        "status": 6,
+        "completion": 1,
+        "aiQuestions": 2,
+        "aiReplies": 1,
+        "noteImages": 82
+      },
+      "start": 1752565644520,
+      "end": 1752568474910,
+      "score": 1997
     },
     {
       "id": "zju-4",
       "name": "zju-4",
-      "students": [
+      "file": "data/groups/zju-4.json",
+      "members": [
         {
           "id": "zju-4member1",
           "name": "zju-4member1",
-          "file": "data/students/zju-4-zju-4member1-814607ed.json",
-          "counts": {
-            "code": 90,
-            "cursor": 1229,
-            "actions": 89,
-            "status": 2,
-            "ai": 1
-          },
-          "start": 1752565394060,
-          "end": 1752568493129,
-          "score": 530
-        },
-        {
-          "id": "zju-4member3",
-          "name": "zju-4member3",
-          "file": "data/students/zju-4-zju-4member3-5aa8ef5d.json",
-          "counts": {
-            "code": 5,
-            "cursor": 85,
-            "actions": 45,
-            "status": 2,
-            "ai": 1
-          },
-          "start": 1752565393999,
-          "end": 1752568493856,
-          "score": 187
+          "username": "方宏宇",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-4member2",
           "name": "zju-4member2",
-          "file": "data/students/zju-4-zju-4member2-543b171d.json",
-          "counts": {
-            "code": 0,
-            "cursor": 80,
-            "actions": 36,
-            "status": 8,
-            "ai": 0
-          },
-          "start": 1752565394211,
-          "end": 1752568498154,
-          "score": 80
+          "username": "wkx",
+          "color": "#aee9c1"
+        },
+        {
+          "id": "zju-4member3",
+          "name": "zju-4member3",
+          "username": "Zhou Haowen",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 95,
+        "notes": 380,
+        "cursor": 1394,
+        "actions": 170,
+        "chat": 19,
+        "status": 12,
+        "completion": 1,
+        "aiQuestions": 2,
+        "aiReplies": 2,
+        "noteImages": 2164
+      },
+      "start": 1752565393250,
+      "end": 1752568498154,
+      "score": 1291
     },
     {
       "id": "zju-55",
       "name": "zju-55",
-      "students": [
+      "file": "data/groups/zju-55.json",
+      "members": [
         {
           "id": "zju-55member1",
           "name": "zju-55member1",
-          "file": "data/students/zju-55-zju-55member1-306b18a4.json",
-          "counts": {
-            "code": 38,
-            "cursor": 464,
-            "actions": 59,
-            "status": 2,
-            "ai": 1
-          },
-          "start": 1752565759296,
-          "end": 1752568884689,
-          "score": 314
-        },
-        {
-          "id": "zju-55member3",
-          "name": "zju-55member3",
-          "file": "data/students/zju-55-zju-55member3-089fee2c.json",
-          "counts": {
-            "code": 5,
-            "cursor": 50,
-            "actions": 20,
-            "status": 4,
-            "ai": 3
-          },
-          "start": 1752565759293,
-          "end": 1752568552859,
-          "score": 299
+          "username": "郭润航",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-55member2",
           "name": "zju-55member2",
-          "file": "data/students/zju-55-zju-55member2-b3ab11db.json",
-          "counts": {
-            "code": 0,
-            "cursor": 2,
-            "actions": 10,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565760428,
-          "end": 1752568547925,
-          "score": 22
+          "username": "test",
+          "color": "#aee9c1"
+        },
+        {
+          "id": "zju-55member3",
+          "name": "zju-55member3",
+          "username": "Tingxuan Tang",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 43,
+        "notes": 21,
+        "cursor": 516,
+        "actions": 89,
+        "chat": 27,
+        "status": 8,
+        "completion": 1,
+        "aiQuestions": 4,
+        "aiReplies": 4,
+        "noteImages": 14
+      },
+      "start": 1752565758624,
+      "end": 1752568884689,
+      "score": 368
     },
     {
       "id": "zju-6",
       "name": "zju-6",
-      "students": [
-        {
-          "id": "zju-6member2",
-          "name": "zju-6member2",
-          "file": "data/students/zju-6-zju-6member2-83194963.json",
-          "counts": {
-            "code": 39,
-            "cursor": 94,
-            "actions": 2,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752567058665,
-          "end": 1752569122918,
-          "score": 123
-        },
+      "file": "data/groups/zju-6.json",
+      "members": [
         {
           "id": "zju-6member1",
           "name": "zju-6member1",
-          "file": "data/students/zju-6-zju-6member1-8d0af45d.json",
-          "counts": {
-            "code": 4,
-            "cursor": 14,
-            "actions": 11,
-            "status": 6,
-            "ai": 0
-          },
-          "start": 1752567066684,
-          "end": 1752568045210,
-          "score": 40
+          "username": "张博渊",
+          "color": "#b7d7ff"
+        },
+        {
+          "id": "zju-6member2",
+          "name": "zju-6member2",
+          "username": "madeline",
+          "color": "#aee9c1"
         },
         {
           "id": "zju-6member3",
           "name": "zju-6member3",
-          "file": "data/students/zju-6-zju-6member3-222f6772.json",
-          "counts": {
-            "code": 0,
-            "cursor": 3,
-            "actions": 14,
-            "status": 4,
-            "ai": 0
-          },
-          "start": 1752567058074,
-          "end": 1752568249314,
-          "score": 32
+          "username": "11",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 43,
+        "notes": 0,
+        "cursor": 111,
+        "actions": 27,
+        "chat": 10,
+        "status": 12,
+        "completion": 0,
+        "aiQuestions": 0,
+        "aiReplies": 0,
+        "noteImages": 0
+      },
+      "start": 1752567057914,
+      "end": 1752569122918,
+      "score": 196
     },
     {
       "id": "zju-7",
       "name": "zju-7",
-      "students": [
-        {
-          "id": "zju-7member3",
-          "name": "zju-7member3",
-          "file": "data/students/zju-7-zju-7member3-f63d6b20.json",
-          "counts": {
-            "code": 349,
-            "cursor": 1218,
-            "actions": 98,
-            "status": 6,
-            "ai": 7
-          },
-          "start": 1752565454077,
-          "end": 1752568510272,
-          "score": 1809
-        },
+      "file": "data/groups/zju-7.json",
+      "members": [
         {
           "id": "zju-7member1",
           "name": "zju-7member1",
-          "file": "data/students/zju-7-zju-7member1-38c1dc92.json",
-          "counts": {
-            "code": 3,
-            "cursor": 12,
-            "actions": 27,
-            "status": 6,
-            "ai": 1
-          },
-          "start": 1752565454277,
-          "end": 1752568734390,
-          "score": 149
+          "username": "陈彦博",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-7member2",
           "name": "zju-7member2",
-          "file": "data/students/zju-7-zju-7member2-955918b6.json",
-          "counts": {
-            "code": 0,
-            "cursor": 15,
-            "actions": 38,
-            "status": 6,
-            "ai": 0
-          },
-          "start": 1752565455573,
-          "end": 1752568462791,
-          "score": 82
+          "username": "zhoutao",
+          "color": "#aee9c1"
+        },
+        {
+          "id": "zju-7member3",
+          "name": "zju-7member3",
+          "username": "Yu Chenxi",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 352,
+        "notes": 39,
+        "cursor": 1245,
+        "actions": 163,
+        "chat": 38,
+        "status": 18,
+        "completion": 1,
+        "aiQuestions": 8,
+        "aiReplies": 8,
+        "noteImages": 1
+      },
+      "start": 1752565453500,
+      "end": 1752568734390,
+      "score": 1449
     },
     {
       "id": "zju-8",
       "name": "zju-8",
-      "students": [
+      "file": "data/groups/zju-8.json",
+      "members": [
         {
           "id": "zju-8member1",
           "name": "zju-8member1",
-          "file": "data/students/zju-8-zju-8member1-3ea7ed43.json",
-          "counts": {
-            "code": 356,
-            "cursor": 1221,
-            "actions": 87,
-            "status": 6,
-            "ai": 8
-          },
-          "start": 1752565493305,
-          "end": 1752568596069,
-          "score": 1888
+          "username": "吴邦定",
+          "color": "#b7d7ff"
         },
         {
           "id": "zju-8member2",
           "name": "zju-8member2",
-          "file": "data/students/zju-8-zju-8member2-de173670.json",
-          "counts": {
-            "code": 6,
-            "cursor": 201,
-            "actions": 44,
-            "status": 6,
-            "ai": 2
-          },
-          "start": 1752565494335,
-          "end": 1752568564495,
-          "score": 272
+          "username": "11",
+          "color": "#aee9c1"
         },
         {
           "id": "zju-8member3",
           "name": "zju-8member3",
-          "file": "data/students/zju-8-zju-8member3-7af5bafb.json",
-          "counts": {
-            "code": 0,
-            "cursor": 33,
-            "actions": 31,
-            "status": 4,
-            "ai": 1
-          },
-          "start": 1752565493304,
-          "end": 1752568488959,
-          "score": 146
+          "username": "guoyuyang",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 362,
+        "notes": 51,
+        "cursor": 1455,
+        "actions": 162,
+        "chat": 59,
+        "status": 16,
+        "completion": 1,
+        "aiQuestions": 11,
+        "aiReplies": 11,
+        "noteImages": 37
+      },
+      "start": 1752565492481,
+      "end": 1752568596069,
+      "score": 1586
     },
     {
       "id": "zju-9",
       "name": "zju-9",
-      "students": [
-        {
-          "id": "zju-9member2",
-          "name": "zju-9member2",
-          "file": "data/students/zju-9-zju-9member2-67b744a0.json",
-          "counts": {
-            "code": 3,
-            "cursor": 68,
-            "actions": 12,
-            "status": 2,
-            "ai": 2
-          },
-          "start": 1752565482217,
-          "end": 1752568573081,
-          "score": 195
-        },
+      "file": "data/groups/zju-9.json",
+      "members": [
         {
           "id": "zju-9member1",
           "name": "zju-9member1",
-          "file": "data/students/zju-9-zju-9member1-4dc68351.json",
-          "counts": {
-            "code": 5,
-            "cursor": 113,
-            "actions": 27,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565569800,
-          "end": 1752568396709,
-          "score": 71
+          "username": "???",
+          "color": "#b7d7ff"
+        },
+        {
+          "id": "zju-9member2",
+          "name": "zju-9member2",
+          "username": "why",
+          "color": "#aee9c1"
         },
         {
           "id": "zju-9member3",
           "name": "zju-9member3",
-          "file": "data/students/zju-9-zju-9member3-4854f7dd.json",
-          "counts": {
-            "code": 0,
-            "cursor": 63,
-            "actions": 25,
-            "status": 2,
-            "ai": 0
-          },
-          "start": 1752565480622,
-          "end": 1752568405073,
-          "score": 52
+          "username": "徐常喻",
+          "color": "#f4d77a"
         }
-      ]
+      ],
+      "counts": {
+        "code": 8,
+        "notes": 43,
+        "cursor": 244,
+        "actions": 64,
+        "chat": 8,
+        "status": 6,
+        "completion": 1,
+        "aiQuestions": 2,
+        "aiReplies": 2,
+        "noteImages": 43
+      },
+      "start": 1752565480622,
+      "end": 1752568573081,
+      "score": 206
     }
   ]
 }

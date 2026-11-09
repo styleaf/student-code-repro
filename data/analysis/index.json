@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "defaultGroup": "zju-1",
+  "groups": [
+    {
+      "id": "zju-1",
+      "name": "zju-1",
+      "file": "data/analysis/zju-1.json",
+      "members": 3,
+      "events": 5143,
+      "ai": 1,
+      "noteInsights": 20,
+      "anomalies": 81,
+      "icap": {
+        "Active": 10,
+        "Passive": 17,
+        "None": 1
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-10",
+      "name": "zju-10",
+      "file": "data/analysis/zju-10.json",
+      "members": 3,
+      "events": 665,
+      "ai": 0,
+      "noteInsights": 16,
+      "anomalies": 16,
+      "icap": {
+        "Passive": 15,
+        "Active": 10
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-11",
+      "name": "zju-11",
+      "file": "data/analysis/zju-11.json",
+      "members": 3,
+      "events": 920,
+      "ai": 10,
+      "noteInsights": 4,
+      "anomalies": 18,
+      "icap": {
+        "Passive": 9,
+        "Active": 6,
+        "None": 8
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-2",
+      "name": "zju-2",
+      "file": "data/analysis/zju-2.json",
+      "members": 3,
+      "events": 1868,
+      "ai": 9,
+      "noteInsights": 7,
+      "anomalies": 45,
+      "icap": {
+        "Active": 9,
+        "Passive": 17,
+        "None": 1
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-3",
+      "name": "zju-3",
+      "file": "data/analysis/zju-3.json",
+      "members": 3,
+      "events": 1586,
+      "ai": 1,
+      "noteInsights": 9,
+      "anomalies": 31,
+      "icap": {
+        "Active": 9,
+        "Passive": 13,
+        "None": 2
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-4",
+      "name": "zju-4",
+      "file": "data/analysis/zju-4.json",
+      "members": 3,
+      "events": 2051,
+      "ai": 2,
+      "noteInsights": 35,
+      "anomalies": 32,
+      "icap": {
+        "Passive": 21,
+        "Active": 5
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-55",
+      "name": "zju-55",
+      "file": "data/analysis/zju-55.json",
+      "members": 3,
+      "events": 689,
+      "ai": 4,
+      "noteInsights": 10,
+      "anomalies": 11,
+      "icap": {
+        "Passive": 14,
+        "None": 7,
+        "Active": 6
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-6",
+      "name": "zju-6",
+      "file": "data/analysis/zju-6.json",
+      "members": 3,
+      "events": 186,
+      "ai": 0,
+      "noteInsights": 0,
+      "anomalies": 4,
+      "icap": {
+        "Active": 2,
+        "Passive": 4,
+        "None": 12
+      },
+      "completed": false
+    },
+    {
+      "id": "zju-7",
+      "name": "zju-7",
+      "file": "data/analysis/zju-7.json",
+      "members": 3,
+      "events": 1821,
+      "ai": 8,
+      "noteInsights": 32,
+      "anomalies": 44,
+      "icap": {
+        "Active": 11,
+        "Passive": 16,
+        "None": 1
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-8",
+      "name": "zju-8",
+      "file": "data/analysis/zju-8.json",
+      "members": 3,
+      "events": 2071,
+      "ai": 11,
+      "noteInsights": 21,
+      "anomalies": 55,
+      "icap": {
+        "Passive": 10,
+        "Active": 16
+      },
+      "completed": true
+    },
+    {
+      "id": "zju-9",
+      "name": "zju-9",
+      "file": "data/analysis/zju-9.json",
+      "members": 3,
+      "events": 363,
+      "ai": 2,
+      "noteInsights": 13,
+      "anomalies": 4,
+      "icap": {
+        "Passive": 17,
+        "Active": 3,
+        "None": 6
+      },
+      "completed": true
+    }
+  ]
+}
