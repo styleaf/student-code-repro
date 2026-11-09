@@ -32,10 +32,28 @@
           <div id="codeView" class="code-view" role="region" aria-label="当前完整共享代码"></div>
         </section>
 
+        <section id="previewPanel" class="panel preview-panel" aria-labelledby="previewTitle">
+          <header class="panel-header">
+            <div><h2 id="previewTitle">实时可视结果</h2><p id="previewMeta">与当前代码快照同步</p></div>
+            <div class="preview-header-actions">
+              <span id="previewState" class="preview-state is-waiting">等待代码</span>
+              <button id="previewZoom" class="preview-zoom" type="button" title="恢复智能缩放" aria-label="恢复智能缩放">--</button>
+              <button id="previewToggle" class="panel-icon-button" type="button" title="放大预览" aria-label="放大实时可视结果" aria-pressed="false">⛶</button>
+            </div>
+          </header>
+          <div id="previewStage" class="preview-stage" role="region" aria-label="当前 Vega-Lite 代码生成的可视化结果">
+            <div id="visualization" class="visualization"></div>
+            <div id="previewMessage" class="preview-message">
+              <strong>等待第一条代码快照</strong>
+              <span>可视化不会早于对应代码出现</span>
+            </div>
+          </div>
+        </section>
+
         <section class="context-panel" aria-label="共享笔记和房间聊天">
           <div class="compact-tabs" role="tablist" aria-label="右侧内容">
-            <button class="context-tab is-active" type="button" role="tab" data-context="notes" aria-selected="true">共享笔记</button>
-            <button class="context-tab" type="button" role="tab" data-context="chat" aria-selected="false">房间聊天 / AI</button>
+            <button class="context-tab" type="button" role="tab" data-context="notes" aria-selected="false">共享笔记</button>
+            <button class="context-tab is-active" type="button" role="tab" data-context="chat" aria-selected="true">房间聊天 / AI</button>
           </div>
           <section id="notesPane" class="context-pane notes-pane" data-context-pane="notes" aria-labelledby="notesTitle">
             <header class="panel-header">
@@ -44,7 +62,7 @@
             </header>
             <div id="noteView" class="note-view"></div>
           </section>
-          <section id="chatPane" class="context-pane chat-pane" data-context-pane="chat" aria-labelledby="chatTitle">
+          <section id="chatPane" class="context-pane chat-pane is-active" data-context-pane="chat" aria-labelledby="chatTitle">
             <header class="panel-header">
               <div><h2 id="chatTitle">房间聊天 / AI</h2><p id="chatMeta">消息只在发送时间后出现</p></div>
             </header>
@@ -82,6 +100,9 @@
       </div>
     </footer>
 
+    <script src="/app/vendor/vega.min.js"></script>
+    <script src="/app/vendor/vega-lite.min.js"></script>
+    <script src="/app/vendor/vega-embed.min.js"></script>
     <script type="module" src="/app/app.js"></script>
   </body>
 </html>

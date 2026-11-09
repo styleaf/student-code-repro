@@ -26,9 +26,12 @@ let browser;
 
   assert.equal(await page.locator("#groupSelect option").count(), 11, "should expose 11 active groups");
   assert.equal(await page.locator(".member-chip").count(), 3, "selected group should expose three members");
-  assert.equal(await page.locator(".context-pane").count(), 2, "notes and chat should coexist on desktop");
+  assert.equal(await page.locator(".context-pane").count(), 2, "notes and chat should remain available on desktop");
   const desktopPanes = await page.locator(".context-pane").evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).display));
-  assert.ok(desktopPanes.every((value) => value !== "none"), "desktop should show notes and chat together");
+  assert.equal(desktopPanes.filter((value) => value !== "none").length, 1, "desktop should use compact notes/chat tabs to leave room for the visualization");
+  assert.equal(await page.locator("#chatPane").isVisible(), true, "room chat / AI should be the default context tab");
+  assert.equal(await page.locator('[data-context="chat"]').getAttribute("aria-selected"), "true");
+  assert.equal(await page.locator("#previewPanel").isVisible(), true, "live visualization panel should be visible");
 
   const selected = await page.evaluate(async () => {
     const index = await (await fetch("/data/index.json")).json();
@@ -47,7 +50,69 @@ let browser;
   }));
   assert.deepEqual(renderedCode, firstCode.code.replaceAll("\r\n", "\n").split("\n").map((line) => line || " "));
   assert.match(await page.locator("#codeActor").innerText(), new RegExp(firstCode.actor));
+  assert.match(await page.locator("#previewState").innerText(), /搭建中|输入中/, "an incomplete visualization must not show a future result");
+  assert.equal(await page.locator("#visualization svg").count(), 0, "future visualization must stay hidden");
 
+  const renderableCode = selected.code.find((item) => {
+    try {
+      const spec = JSON.parse(item.code);
+      return Boolean(spec.mark || spec.layer || spec.hconcat || spec.vconcat || spec.concat || spec.repeat || spec.facet);
+    } catch {
+      return false;
+    }
+  });
+  assert.ok(renderableCode, "default group should contain a renderable Vega-Lite snapshot");
+  await seek(page, selected, renderableCode.t);
+  await page.waitForFunction(() => document.querySelector("#previewState")?.textContent === "已同步", null, { timeout: 10000 });
+  assert.ok((await page.locator("#visualization svg").count()) > 0, "renderable code should produce an SVG visualization");
+  assert.match(await page.locator("#previewMeta").innerText(), new RegExp(`代码快照`));
+  await page.locator("#previewToggle").click();
+  await page.waitForTimeout(150);
+  const expandedPreview = await page.evaluate(() => {
+    const stage = document.querySelector("#previewStage").getBoundingClientRect();
+    const code = document.querySelector("#codePanel").getBoundingClientRect();
+    const svg = document.querySelector("#visualization svg").getBoundingClientRect();
+    return {
+      expanded: document.querySelector(".workspace").classList.contains("is-preview-expanded"),
+      pressed: document.querySelector("#previewToggle").getAttribute("aria-pressed"),
+      codeDisplay: getComputedStyle(document.querySelector("#codePanel")).display,
+      contextDisplay: getComputedStyle(document.querySelector(".context-panel")).display,
+      stageWidth: stage.width,
+      codeWidth: code.width,
+      svgWidth: svg.width,
+      svgHeight: svg.height,
+      stageHeight: stage.height,
+      scale: Number(document.querySelector("#visualization").dataset.fitScale),
+    };
+  });
+  assert.equal(expandedPreview.expanded, true, "maximize button should expand the live result beside the code editor");
+  assert.equal(expandedPreview.pressed, "true");
+  assert.notEqual(expandedPreview.codeDisplay, "none", "expanded mode must retain the code editor");
+  assert.equal(expandedPreview.contextDisplay, "none");
+  assert.ok(expandedPreview.stageWidth > 750 && expandedPreview.codeWidth > 500, "code and expanded result should both have usable width");
+  assert.ok(expandedPreview.scale >= 0.45, "smart sizing should not shrink tall charts below the readable minimum");
+  assert.ok(expandedPreview.svgWidth >= expandedPreview.stageWidth * 0.45, "a tall chart should still occupy a readable share of the result area");
+
+  const stageBox = await page.locator("#previewStage").boundingBox();
+  await page.mouse.move(stageBox.x + stageBox.width / 2, stageBox.y + stageBox.height / 2);
+  const scaleBeforeWheel = Number(await page.locator("#visualization").getAttribute("data-fit-scale"));
+  await page.mouse.wheel(0, -120);
+  await page.waitForTimeout(80);
+  const scaleAfterZoomIn = Number(await page.locator("#visualization").getAttribute("data-fit-scale"));
+  assert.ok(scaleAfterZoomIn > scaleBeforeWheel, "mouse wheel up should zoom the visualization in");
+  await page.mouse.wheel(0, 120);
+  await page.waitForTimeout(80);
+  const scaleAfterZoomOut = Number(await page.locator("#visualization").getAttribute("data-fit-scale"));
+  assert.ok(scaleAfterZoomOut < scaleAfterZoomIn, "mouse wheel down should zoom the visualization out");
+  await page.locator("#previewZoom").click();
+  await page.waitForTimeout(80);
+  assert.equal(Number(await page.locator("#visualization").getAttribute("data-fit-scale")), scaleBeforeWheel, "zoom readout should restore smart sizing");
+  await page.screenshot({ path: path.join(__dirname, "replay-preview-expanded.png"), fullPage: true });
+  await page.locator("#previewToggle").click();
+  await page.waitForTimeout(100);
+  assert.equal(await page.locator("#codePanel").isVisible(), true, "restore button should return the three-column workspace");
+
+  await page.locator('[data-context="notes"]').click();
   const firstNote = selected.notes[0];
   await seek(page, selected, firstNote.t - 1);
   assert.equal(await page.locator("#noteView .note-text").count(), 0, "note must not appear early");
@@ -102,9 +167,11 @@ let browser;
     const lower = document.querySelector(".lower-panel").getBoundingClientRect();
     const activity = document.querySelector("#activityList").getBoundingClientRect();
     const actions = document.querySelector("#actionSummary").getBoundingClientRect();
-    return { lower: lower.height, activity: activity.height, actions: actions.height, pageWidth: document.documentElement.scrollWidth, viewport: innerWidth };
+    const preview = document.querySelector("#previewPanel").getBoundingClientRect();
+    return { lower: lower.height, activity: activity.height, actions: actions.height, preview: preview.width, pageWidth: document.documentElement.scrollWidth, viewport: innerWidth };
   });
   assert.ok(layout.lower >= 160 && layout.activity >= 120 && layout.actions >= 90, "lower panels must remain visible with code loaded");
+  assert.ok(layout.preview >= 300, "desktop visualization should have usable width");
   assert.ok(layout.pageWidth <= layout.viewport, "desktop should not overflow horizontally");
 
   const mixedNote = selected.notes.find((item) => new Set(item.owners).size >= 2);
@@ -127,6 +194,20 @@ let browser;
   const narrow = await page.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth, timeline: document.querySelector("#timeline").getBoundingClientRect().width }));
   assert.ok(narrow.scrollWidth <= narrow.width && narrow.timeline > 0, "narrow layout should keep controls visible without page overflow");
   await page.screenshot({ path: path.join(__dirname, "replay-narrow.png"), fullPage: true });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(120);
+  const mobile = await page.evaluate(() => ({
+    width: innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    workspaceRows: getComputedStyle(document.querySelector(".workspace")).gridTemplateRows,
+    previewVisible: document.querySelector("#previewPanel").getBoundingClientRect().height > 0,
+    contextVisible: document.querySelector(".context-panel").getBoundingClientRect().height > 0,
+  }));
+  assert.ok(mobile.previewVisible && mobile.contextVisible, "mobile workspace should keep preview and context accessible by vertical scrolling");
+  assert.ok(mobile.workspaceRows.split(" ").length >= 3, "mobile workspace should stack its three main areas");
+  assert.ok(mobile.scrollWidth <= mobile.width, "mobile layout should not overflow horizontally");
+  await page.screenshot({ path: path.join(__dirname, "replay-mobile.png"), fullPage: true });
 
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.selectOption("#groupSelect", "zju-11");
@@ -154,6 +235,8 @@ let browser;
     playbackAdvancedMs: duringPlay - beforePlay,
     desktopScreenshot: path.join(__dirname, "replay-desktop.png"),
     narrowScreenshot: path.join(__dirname, "replay-narrow.png"),
+    mobileScreenshot: path.join(__dirname, "replay-mobile.png"),
+    expandedPreviewScreenshot: path.join(__dirname, "replay-preview-expanded.png"),
     aiOwnershipScreenshot: path.join(__dirname, "replay-ai-ownership.png"),
   }, null, 2));
   await browser.close();

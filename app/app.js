@@ -8,7 +8,13 @@ const state = {
   frame: 0,
   lastFrameAt: 0,
   cache: {},
-  context: "notes",
+  context: "chat",
+  previewToken: 0,
+  previewView: null,
+  previewExpanded: false,
+  previewFitFrame: 0,
+  previewAutoScale: 1,
+  previewUserScale: 1,
 };
 
 const el = {
@@ -16,12 +22,20 @@ const el = {
   group: document.querySelector("#groupSelect"),
   members: document.querySelector("#memberLegend"),
   analysisLink: document.querySelector("#analysisLink"),
+  workspace: document.querySelector(".workspace"),
   codePanel: document.querySelector("#codePanel"),
   codeMeta: document.querySelector("#codeMeta"),
   codeActor: document.querySelector("#codeActor"),
   changeSummary: document.querySelector("#changeSummary"),
   cursorSummary: document.querySelector("#cursorSummary"),
   codeView: document.querySelector("#codeView"),
+  previewMeta: document.querySelector("#previewMeta"),
+  previewState: document.querySelector("#previewState"),
+  previewZoom: document.querySelector("#previewZoom"),
+  previewToggle: document.querySelector("#previewToggle"),
+  previewStage: document.querySelector("#previewStage"),
+  visualization: document.querySelector("#visualization"),
+  previewMessage: document.querySelector("#previewMessage"),
   notesPane: document.querySelector("#notesPane"),
   noteMeta: document.querySelector("#noteMeta"),
   noteActor: document.querySelector("#noteActor"),
@@ -229,6 +243,181 @@ function renderCode(force = false) {
     fragment.append(row);
   });
   el.codeView.replaceChildren(fragment);
+}
+
+function setPreviewStatus(kind, label) {
+  el.previewState.className = `preview-state is-${kind}`;
+  el.previewState.textContent = label;
+}
+
+function setPreviewMessage(title, detail, error = false) {
+  el.visualization.replaceChildren();
+  el.previewMessage.replaceChildren();
+  el.previewMessage.className = `preview-message${error ? " is-error" : ""}`;
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  const description = document.createElement("span");
+  description.textContent = detail;
+  el.previewMessage.append(heading, description);
+  el.previewZoom.textContent = "--";
+}
+
+function previewDimensions(svg) {
+  if (!svg.dataset.naturalWidth || !svg.dataset.naturalHeight) {
+    const viewBox = svg.viewBox?.baseVal;
+    const width = Number(svg.getAttribute("width")) || viewBox?.width || svg.getBoundingClientRect().width;
+    const height = Number(svg.getAttribute("height")) || viewBox?.height || svg.getBoundingClientRect().height;
+    svg.dataset.naturalWidth = String(width);
+    svg.dataset.naturalHeight = String(height);
+  }
+  return {
+    width: Number(svg.dataset.naturalWidth),
+    height: Number(svg.dataset.naturalHeight),
+  };
+}
+
+function applyPreviewScale() {
+  const svg = el.visualization.querySelector("svg");
+  if (!svg) return;
+  const natural = previewDimensions(svg);
+  if (!natural.width || !natural.height) return;
+  const scale = Math.max(0.1, Math.min(4, state.previewAutoScale * state.previewUserScale));
+  svg.style.width = `${Math.max(1, Math.floor(natural.width * scale))}px`;
+  svg.style.height = `${Math.max(1, Math.floor(natural.height * scale))}px`;
+  el.previewZoom.textContent = `${Math.round(scale * 100)}%`;
+  el.visualization.dataset.fitScale = scale.toFixed(4);
+  el.visualization.dataset.autoScale = state.previewAutoScale.toFixed(4);
+  el.visualization.dataset.naturalSize = `${Math.round(natural.width)}x${Math.round(natural.height)}`;
+}
+
+function fitPreview(resetUserScale = false) {
+  cancelAnimationFrame(state.previewFitFrame);
+  state.previewFitFrame = requestAnimationFrame(() => {
+    const svg = el.visualization.querySelector("svg");
+    if (!svg) return;
+    const natural = previewDimensions(svg);
+    if (!natural.width || !natural.height) return;
+    if (resetUserScale) state.previewUserScale = 1;
+    if (state.previewExpanded) {
+      const availableWidth = Math.max(1, el.previewStage.clientWidth - 44);
+      const availableHeight = Math.max(1, el.previewStage.clientHeight - 44);
+      const exactFit = Math.min(availableWidth / natural.width, availableHeight / natural.height, 2);
+      const readableWidth = Math.min(2, (availableWidth * 0.5) / natural.width);
+      state.previewAutoScale = Math.max(0.45, exactFit, readableWidth);
+    } else {
+      state.previewAutoScale = 1;
+    }
+    applyPreviewScale();
+  });
+}
+
+function setPreviewExpanded(value) {
+  state.previewExpanded = value;
+  el.workspace.classList.toggle("is-preview-expanded", value);
+  el.previewToggle.setAttribute("aria-pressed", String(value));
+  el.previewToggle.setAttribute("aria-label", value ? "恢复协作回放布局" : "放大实时可视结果");
+  el.previewToggle.title = value ? "恢复布局" : "放大预览";
+  el.previewToggle.textContent = value ? "↙" : "⛶";
+  fitPreview(true);
+}
+
+function zoomPreview(event) {
+  const svg = el.visualization.querySelector("svg");
+  if (!svg) return;
+  event.preventDefault();
+  const oldScale = state.previewAutoScale * state.previewUserScale;
+  const factor = event.deltaY < 0 ? 1.12 : 1 / 1.12;
+  const nextScale = Math.max(0.1, Math.min(4, oldScale * factor));
+  if (Math.abs(nextScale - oldScale) < 0.0001) return;
+  const oldRect = svg.getBoundingClientRect();
+  const contentX = (event.clientX - oldRect.left) / oldScale;
+  const contentY = (event.clientY - oldRect.top) / oldScale;
+  state.previewUserScale = nextScale / state.previewAutoScale;
+  applyPreviewScale();
+  requestAnimationFrame(() => {
+    const newRect = svg.getBoundingClientRect();
+    el.previewStage.scrollLeft += newRect.left + contentX * nextScale - event.clientX;
+    el.previewStage.scrollTop += newRect.top + contentY * nextScale - event.clientY;
+  });
+}
+
+function hasVisualDefinition(spec) {
+  return Boolean(spec?.mark || spec?.layer || spec?.hconcat || spec?.vconcat || spec?.concat || spec?.repeat || spec?.facet);
+}
+
+function localizeDataSources(value) {
+  if (!value || typeof value !== "object") return;
+  Object.entries(value).forEach(([key, child]) => {
+    if (key === "url" && typeof child === "string" && /(^|\/)ds_salaries\.csv(?:[?#].*)?$/i.test(child)) {
+      value[key] = "/ds_salaries.csv";
+      return;
+    }
+    localizeDataSources(child);
+  });
+}
+
+async function renderPreview(force = false) {
+  const index = lastIndexAt(state.group.code, state.current);
+  if (!force && state.cache.preview === index) return;
+  state.cache.preview = index;
+  state.previewUserScale = 1;
+  const token = ++state.previewToken;
+  state.previewView?.finalize();
+  state.previewView = null;
+
+  if (index < 0) {
+    el.previewMeta.textContent = "与当前代码快照同步";
+    setPreviewStatus("waiting", "等待代码");
+    setPreviewMessage("等待第一条代码快照", "可视化不会早于对应代码出现");
+    return;
+  }
+
+  const snapshot = state.group.code[index];
+  el.previewMeta.textContent = `代码快照 ${index + 1}/${state.group.code.length} · ${clockFormat.format(new Date(snapshot.t))}`;
+  let spec;
+  try {
+    spec = JSON.parse(snapshot.code);
+  } catch (error) {
+    setPreviewStatus("editing", "代码输入中");
+    setPreviewMessage("当前 JSON 尚未完整", error.message.replace(/^JSON\.parse:\s*/i, ""), false);
+    return;
+  }
+
+  if (!hasVisualDefinition(spec)) {
+    setPreviewStatus("editing", "规范搭建中");
+    setPreviewMessage("尚未定义可视图形", "当前 JSON 结构有效，但还没有 mark、layer 或组合视图定义");
+    return;
+  }
+
+  if (typeof window.vegaEmbed !== "function") {
+    setPreviewStatus("error", "渲染器不可用");
+    setPreviewMessage("Vega-Lite 渲染器未加载", "请刷新页面后重试", true);
+    return;
+  }
+
+  localizeDataSources(spec);
+  el.visualization.replaceChildren();
+  el.previewMessage.className = "preview-message is-hidden";
+  setPreviewStatus("editing", "正在生成");
+  try {
+    const result = await window.vegaEmbed(el.visualization, spec, {
+      actions: false,
+      renderer: "svg",
+      mode: "vega-lite",
+      tooltip: true,
+    });
+    if (token !== state.previewToken) {
+      result.view.finalize();
+      return;
+    }
+    state.previewView = result.view;
+    setPreviewStatus("ready", "已同步");
+    fitPreview(true);
+  } catch (error) {
+    if (token !== state.previewToken) return;
+    setPreviewStatus("error", "生成失败");
+    setPreviewMessage("当前代码无法生成图表", error.message || String(error), true);
+  }
 }
 
 function renderNote(force = false) {
@@ -445,6 +634,7 @@ function render(force = false) {
   if (!state.group) return;
   renderMembers();
   renderCode(force);
+  renderPreview(force);
   renderNote(force);
   renderChat(force);
   renderActivity();
@@ -625,7 +815,7 @@ async function initialize() {
     ? requestedGroup
     : state.index.defaultGroup || state.index.groups[0].id;
   await loadGroup(state.index.groups.find((group) => group.id === el.group.value));
-  setContext("notes");
+  setContext("chat");
 }
 
 el.group.addEventListener("change", () => loadGroup(state.index.groups.find((group) => group.id === el.group.value)).catch(showError));
@@ -634,7 +824,16 @@ el.restart.addEventListener("click", () => state.group && seek(state.group.timel
 el.speed.addEventListener("change", () => { state.speed = Number(el.speed.value); });
 el.timeline.addEventListener("input", () => state.group && seek(state.group.timelineStart + Number(el.timeline.value)));
 el.contextTabs.forEach((tab) => tab.addEventListener("click", () => setContext(tab.dataset.context)));
+el.previewToggle.addEventListener("click", () => setPreviewExpanded(!state.previewExpanded));
+el.previewZoom.addEventListener("click", () => fitPreview(true));
+el.previewStage.addEventListener("wheel", zoomPreview, { passive: false });
+new ResizeObserver(() => fitPreview()).observe(el.previewStage);
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && state.previewExpanded) {
+    setPreviewExpanded(false);
+    el.previewToggle.focus();
+    return;
+  }
   if (event.code === "Space" && !["SELECT", "INPUT", "TEXTAREA", "BUTTON"].includes(document.activeElement?.tagName)) {
     event.preventDefault();
     setPlaying(!state.playing);
