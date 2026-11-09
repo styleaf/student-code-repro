@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小组发现</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/app/group-findings.css" />
+  </head>
+  <body>
+    <header class="findings-topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><div><h1>小组发现</h1><p>从协作与 AI 过程数据中筛选值得深入分析的案例</p></div></div>
+      <a class="nav-button" href="/">返回回放</a>
+      <a class="nav-button" href="/app/analysis.html">事后分析</a>
+    </header>
+    <main id="findingsMain" class="findings-main" aria-busy="true">
+      <section class="finding-warning"><strong>探索性发现，不是因果结论。</strong><span>页面先展示可观察行为，再给出需要回放验证的候选解释。参与次数不等于认知投入，AI 提问也不等于依赖或学习效果。</span></section>
+      <section id="summary" class="summary-grid" aria-label="数据概览"></section>
+      <section class="findings-layout">
+        <section class="panel group-list-panel" aria-labelledby="groupListTitle">
+          <header class="panel-header"><div><h2 id="groupListTitle">11 个小组筛选</h2><p>按 AI 互动、参与集中度和产物特征查看</p></div><label class="sort-control"><span>排序</span><select id="sortSelect"><option value="interest">研究关注度</option><option value="ai">AI 提问</option><option value="events">行为记录</option><option value="images">笔记图片</option><option value="completion">完成状态</option></select></label></header>
+          <div id="groupList" class="group-list"></div>
+        </section>
+        <section class="panel detail-panel" aria-labelledby="detailTitle">
+          <header class="panel-header"><div><h2 id="detailTitle">小组详情</h2><p id="detailMeta">选择左侧小组</p></div><a id="detailReplay" class="small-link" href="/">打开该组回放</a></header>
+          <div id="detailView" class="detail-view"></div>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/app/group-findings.js"></script>
+  </body>
+</html>
